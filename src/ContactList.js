@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
-import { Container, Header, Content, List, ListItem, Text, Body, Right, Button, Icon } from 'native-base'
-import { phonecall } from 'react-native-communications'
 import uuid from 'uuid/v1'
+import { phonecall, text } from 'react-native-communications'
+
+import {
+  Body,
+  Button,
+  Container,
+  Content,
+  Header,
+  Icon,
+  List,
+  ListItem,
+  Text,
+  Right,
+  View
+} from 'native-base'
 
 class ContactList extends Component {
   constructor(props) {
@@ -43,7 +56,13 @@ class ContactList extends Component {
 
   openRecord(contact) {
     const { navigate } = this.props.navigation
-    navigate('View', { ...contact })
+    navigate('View', {
+      contact,
+      actions: {
+        call: this.call,
+        message: this.message
+      }
+    })
   }
 
   deleteContact(contact) {
@@ -52,6 +71,14 @@ class ContactList extends Component {
     this.setState({
       contacts: contacts.filter((c) => c.id !== contact.id)
     })
+  }
+
+  call(number) {
+    phonecall(number, false)
+  }
+
+  message(number) {
+    text(number, false)
   }
 
   render() {
@@ -69,9 +96,17 @@ class ContactList extends Component {
                   <Text note>{c.number}</Text>
                 </Body>
                 <Right>
-                  <Button onPress={() => this.deleteContact(c)}>
-                    <Icon name='trash'/>
-                  </Button>
+                  <View style={{flexDirection: 'row'}}>
+                    <Button onPress={() => this.message(c.number)}>
+                      <Icon type="FontAwesome" name='envelope' />
+                    </Button>
+                    <Button onPress={() => this.call(c.number)}>
+                      <Icon type="FontAwesome" name='phone' />
+                    </Button>
+                    <Button onPress={() => this.deleteContact(c)}>
+                      <Icon type="FontAwesome" name='trash' />
+                    </Button>
+                  </View>
                 </Right>
               </ListItem>
             ))}

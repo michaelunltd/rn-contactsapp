@@ -1,5 +1,4 @@
-import React from 'react'
-import { phonecall, text } from 'react-native-communications'
+import React, { Component } from 'react'
 import {
   Button,
   Card,
@@ -7,21 +6,26 @@ import {
   Container,
   Content,
   Icon,
-  Text,
-  View
+  Text
 } from 'native-base'
 
-class ContactView extends React.Component {
-  doCall(number) {
-    phonecall(number, false)
-  }
-
-  doText(number) {
-    text(number, false)
-  }
-
+class ContactView extends Component {
   render() {
-    const { name, number, company, email } = this.props.navigation.state.params
+    console.log(this.props)
+    debugger
+    const {
+      contacts: {
+        company,
+        email,
+        name,
+        number
+      },
+      actions: {
+        call,
+        message
+      }
+    } = this.props.navigation.state.params
+
     return (
       <Container>
         <Content padder>
@@ -44,14 +48,12 @@ class ContactView extends React.Component {
               <Text>{email}</Text>
             </CardItem>
           </Card>
-
-          <Button full primary onPress={() => this.doCall(number)}>
+          <Button full primary onPress={() => call(number)}>
             <Text>CALL</Text>
           </Button>
-          <Button full success onPress={() => this.doText(number)}>
+          <Button full success onPress={() => message(number)}>
             <Text>Text</Text>
           </Button>
-
         </Content>
       </Container>
     )

@@ -1,29 +1,49 @@
 import React, { Component } from 'react'
 import Expo from 'expo'
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
+import { Platform, StatusBar } from 'react-native'
 
 import ContactList from './src/ContactList'
 import ContactView from './src/ContactView'
 
-const AppStack = StackNavigator(
+const AppStack = createStackNavigator(
   {
-    Home: { screen: ContactList },
-    View: { screen: ContactView }
+    Home: {
+      screen: ContactList,
+      navigationOptions: () => ({
+        title: 'Contacts App',
+      })
+    },
+    View: {
+      screen: ContactView,
+      navigationOptions: ({ navigation }) => ({
+        title: `${navigation.state.params.contact.name} Details`
+      })
+    },
   },
   {
-    initialScreen: 'Home'
+    initialRouteName: 'Home'
   }
 )
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = { loading: true }
+  }
   async componentWillMount() {
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     })
+    this.setState({ loading: false })
   }
 
   render() {
+    if (this.state.loading) {
+      return <Expo.AppLoading />
+    }
+
     return (
       <AppStack />
     )

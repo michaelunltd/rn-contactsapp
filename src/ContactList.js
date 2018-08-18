@@ -7,7 +7,6 @@ import {
   Button,
   Container,
   Content,
-  Header,
   Icon,
   List,
   ListItem,
@@ -86,7 +85,6 @@ class ContactList extends Component {
 
     return (
       <Container>
-        <Header />
         <Content>
           <List>
             {contacts.map((c, i) => (
@@ -97,14 +95,24 @@ class ContactList extends Component {
                 </Body>
                 <Right>
                   <View style={{flexDirection: 'row'}}>
-                    <Button onPress={() => this.message(c.number)}>
-                      <Icon type="FontAwesome" name='envelope' />
+                    <Button transparent onPress={() => this.message(c.number)}>
+                      <Icon
+                        type="FontAwesome"
+                        name="envelope"
+                      />
                     </Button>
-                    <Button onPress={() => this.call(c.number)}>
-                      <Icon type="FontAwesome" name='phone' />
+                    <Button transparent onPress={() => this.call(c.number)}>
+                      <Icon
+                        type="FontAwesome"
+                        name="phone"
+                      />
                     </Button>
-                    <Button onPress={() => this.deleteContact(c)}>
-                      <Icon type="FontAwesome" name='trash' />
+                    <Button transparent onPress={() => this.deleteContact(c)}>
+                      <Icon
+                        type="FontAwesome"
+                        name="trash"
+                        style={{ color: 'red' }}
+                      />
                     </Button>
                   </View>
                 </Right>

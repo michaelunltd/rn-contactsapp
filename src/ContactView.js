@@ -6,25 +6,12 @@ import {
   Container,
   Content,
   Icon,
-  Text
+  Text,
 } from 'native-base'
 
 class ContactView extends Component {
   render() {
-    console.log(this.props)
-    debugger
-    const {
-      contacts: {
-        company,
-        email,
-        name,
-        number
-      },
-      actions: {
-        call,
-        message
-      }
-    } = this.props.navigation.state.params
+    const { actions, contact } = this.props.navigation.state.params
 
     return (
       <Container>
@@ -32,26 +19,26 @@ class ContactView extends Component {
           <Card>
             <CardItem header bordered>
               <Text>
-                {name}
+                {contact.name}
               </Text>
             </CardItem>
             <CardItem bordered>
               <Icon active name="ios-phone-portrait" />
-              <Text>{number}</Text>
+              <Text>{contact.number}</Text>
             </CardItem>
             <CardItem bordered>
               <Icon active name="ios-briefcase" />
-              <Text>{company}</Text>
+              <Text>{contact.company}</Text>
             </CardItem>
             <CardItem bordered>
               <Icon active name="ios-contact" />
-              <Text>{email}</Text>
+              <Text>{contact.email}</Text>
             </CardItem>
           </Card>
-          <Button full primary onPress={() => call(number)}>
-            <Text>CALL</Text>
+          <Button full primary onPress={() => actions.call(contact.number)}>
+            <Text>Call</Text>
           </Button>
-          <Button full success onPress={() => message(number)}>
+          <Button full success onPress={() => actions.message(contact.number)}>
             <Text>Text</Text>
           </Button>
         </Content>

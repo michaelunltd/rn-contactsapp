@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import Expo from 'expo'
 import { createStackNavigator } from 'react-navigation'
-import { Platform, StatusBar } from 'react-native'
 
 import ContactList from './src/ContactList'
 import ContactView from './src/ContactView'
+import ContactForm from './src/ContactForm'
 
 const AppStack = createStackNavigator(
   {
     Home: {
       screen: ContactList,
       navigationOptions: () => ({
-        title: 'Contacts App',
+        title: 'Contacts App'
       })
     },
     View: {
@@ -20,6 +20,12 @@ const AppStack = createStackNavigator(
         title: `${navigation.state.params.contact.name} Details`
       })
     },
+    Form: {
+      screen: ContactForm,
+      navigationOptions: () => ({
+        title: 'Add New Contact'
+      })
+    }
   },
   {
     initialRouteName: 'Home'

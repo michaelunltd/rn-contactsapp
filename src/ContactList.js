@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   Content,
+  Fab,
   Icon,
   List,
   ListItem,
@@ -48,12 +49,21 @@ class ContactList extends Component {
           number: '09774561123',
           email: 'anglelock@gmail.com',
           company: 'WWE Smackdown'
+        },
+        {
+          id: uuid(),
+          name: 'Kurt Angle',
+          number: '09774561123',
+          email: 'anglelock@gmail.com',
+          company: 'WWE Smackdown'
         }
       ]
     }
+
+    this.addContact = this.addContact.bind(this)
   }
 
-  openRecord(contact) {
+  navigateToContact(contact) {
     const { navigate } = this.props.navigation
     navigate('View', {
       contact,
@@ -64,11 +74,31 @@ class ContactList extends Component {
     })
   }
 
+  navigateToForm() {
+    const { navigate } = this.props.navigation
+
+    navigate('Form', { addContact: this.addContact })
+  }
+
   deleteContact(contact) {
     const { contacts } = this.state
 
     this.setState({
       contacts: contacts.filter((c) => c.id !== contact.id)
+    })
+  }
+
+  addContact(contact) {
+    const { contacts } = this.state
+
+    this.setState({
+      contacts: [
+        ...contacts,
+        {
+          id: uuid(),
+          ...contact
+        }
+      ]
     })
   }
 
@@ -88,7 +118,7 @@ class ContactList extends Component {
         <Content>
           <List>
             {contacts.map((c, i) => (
-              <ListItem key={i} onPress={()=> this.openRecord(c)}>
+              <ListItem key={i} onPress={()=> this.navigateToContact(c)}>
                 <Body>
                   <Text>{c.name}</Text>
                   <Text note>{c.number}</Text>
@@ -120,6 +150,9 @@ class ContactList extends Component {
             ))}
           </List>
         </Content>
+        <Fab position="bottomRight" onPress={() => this.navigateToForm()}>
+          <Icon name="md-add" />
+        </Fab>
       </Container>
     )
   }

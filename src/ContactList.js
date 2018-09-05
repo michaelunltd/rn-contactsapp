@@ -61,6 +61,7 @@ class ContactList extends Component {
     }
 
     this.addContact = this.addContact.bind(this)
+    this.updateContact = this.updateContact.bind(this)
   }
 
   navigateToContact(contact) {
@@ -74,10 +75,14 @@ class ContactList extends Component {
     })
   }
 
-  navigateToForm() {
+  navigateToForm(action, title, contact = {}) {
     const { navigate } = this.props.navigation
 
-    navigate('Form', { addContact: this.addContact })
+    navigate('Form', {
+      action,
+      title,
+      contact
+    })
   }
 
   deleteContact(contact) {
@@ -99,6 +104,18 @@ class ContactList extends Component {
           ...contact
         }
       ]
+    })
+  }
+
+  updateContact(contact) {
+    const { contacts } = this.state
+
+    this.setState({
+      contacts: contacts.map(c => (
+        contact.id === c.id
+          ? Object.assign({}, c, contact)
+          : c
+      ))
     })
   }
 
@@ -125,6 +142,20 @@ class ContactList extends Component {
                 </Body>
                 <Right>
                   <View style={{flexDirection: 'row'}}>
+                    <Button
+                      transparent
+                      onPress={() => (
+                        this.navigateToForm(
+                          this.updateContact,
+                          `Edit ${c.name}`,
+                          c
+                        )
+                      )}>
+                      <Icon
+                        type="FontAwesome"
+                        name="pencil"
+                      />
+                    </Button>
                     <Button transparent onPress={() => this.message(c.number)}>
                       <Icon
                         type="FontAwesome"
@@ -150,7 +181,9 @@ class ContactList extends Component {
             ))}
           </List>
         </Content>
-        <Fab position="bottomRight" onPress={() => this.navigateToForm()}>
+        <Fab
+          position="bottomRight"
+          onPress={() => this.navigateToForm(this.addContact, 'Add New Contact')}>
           <Icon name="md-add" />
         </Fab>
       </Container>

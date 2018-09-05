@@ -13,20 +13,22 @@ import {
 class ContactForm extends Component {
   constructor(props) {
     super(props)
+    const { contact } = props.navigation.state.params
 
     this.state = {
-      name: '',
-      number: '',
-      company: '',
-      email: ''
+      id: contact && contact.id || '',
+      name: contact && contact.name || '',
+      number: contact && contact.number || '',
+      company: contact && contact.company || '',
+      email: contact && contact.email || ''
     }
   }
 
-  handleAddContact(contact) {
+  handleSubmit(contact) {
     const { pop, state } = this.props.navigation
-    const { addContact } = state.params
+    const { action } = state.params
 
-    addContact(contact)
+    action(contact)
     this.setState({
       name: '',
       number: '',
@@ -37,28 +39,29 @@ class ContactForm extends Component {
   }
 
   render() {
+    const { name, number, company, email } = this.state;
     return (
       <Container>
         <Content padder>
           <Form>
             <Item stackedLabel>
               <Label>Name</Label>
-              <Input onChangeText={name => this.setState({ name })} />
+              <Input onChangeText={name => this.setState({ name })} value={name} />
             </Item>
             <Item stackedLabel>
               <Label>Mobile Number</Label>
-              <Input onChangeText={number => this.setState({ number })} />
+              <Input onChangeText={number => this.setState({ number })} value={number} />
             </Item>
             <Item stackedLabel>
               <Label>Company</Label>
-              <Input onChangeText={company => this.setState({ company })} />
+              <Input onChangeText={company => this.setState({ company })} value={company} />
             </Item>
             <Item stackedLabel>
               <Label>Email</Label>
-              <Input onChangeText={email => this.setState({ email })} />
+              <Input onChangeText={email => this.setState({ email })} value={email} />
             </Item>
           </Form>
-          <Button full primary onPress={() => this.handleAddContact(this.state)}>
+          <Button full primary onPress={() => this.handleSubmit(this.state)}>
             <Text>Save</Text>
           </Button>
         </Content>

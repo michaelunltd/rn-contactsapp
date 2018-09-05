@@ -22,8 +22,8 @@ const AppStack = createStackNavigator(
     },
     Form: {
       screen: ContactForm,
-      navigationOptions: () => ({
-        title: 'Add New Contact'
+      navigationOptions: ({ navigation }) => ({
+        title: navigation.state.params.title
       })
     }
   },
